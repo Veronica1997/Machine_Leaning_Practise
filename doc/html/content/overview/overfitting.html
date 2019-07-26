@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Overfitting and Underfitting &mdash; Machine-Learning-Course 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Regularization" href="regularization.html" />
+    <link rel="prev" title="Linear Regression" href="linear-regression.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/pythonml.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Content</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../authorship/author.html">Authorship</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Foreword</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/intro.html">Introduction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Core Concepts</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="crossvalidation.html">Cross-Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear-regression.html">Linear Regression</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overfitting and Underfitting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overfitting">Overfitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#underfitting">Underfitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code">Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="regularization.html">Regularization</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Supervised Learning</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../supervised/logistic_regression.html">Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supervised/bayes.html">Naive Bayes Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supervised/decisiontrees.html">Decision Trees</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supervised/knn.html">k-Nearest Neighbors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supervised/linear_SVM.html">Linear Support Vector Machines</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Unsupervised Learning</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unsupervised/clustering.html">Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unsupervised/pca.html">Principal Component Analysis</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Deep Learning</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../deep_learning/mlp.html">Multi-layer Perceptron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep_learning/cnn.html">Convolutional Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep_learning/autoencoder.html">Autoencoders</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Document Credentials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../credentials/LICENSE.html">LICENSE</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Machine-Learning-Course</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Overfitting and Underfitting</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com///blob/content/overview/overfitting.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="overfitting-and-underfitting">
+<h1>Overfitting and Underfitting<a class="headerlink" href="#overfitting-and-underfitting" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#overview" id="id1">Overview</a></li>
+<li><a class="reference internal" href="#overfitting" id="id2">Overfitting</a></li>
+<li><a class="reference internal" href="#underfitting" id="id3">Underfitting</a></li>
+<li><a class="reference internal" href="#motivation" id="id4">Motivation</a></li>
+<li><a class="reference internal" href="#code" id="id5">Code</a></li>
+<li><a class="reference internal" href="#conclusion" id="id6">Conclusion</a></li>
+<li><a class="reference internal" href="#references" id="id7">References</a></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>When using machine learning, there are many ways to go wrong.
+Some of the most common issues in machine learning are <strong>overfitting</strong> and <strong>underfitting</strong>.
+To understand these concepts, let’s imagine a machine learning model that is
+trying to learn to classify numbers, and has access to a training set of data and a testing set of data.</p>
+</div>
+<div class="section" id="overfitting">
+<h2><a class="toc-backref" href="#id2">Overfitting</a><a class="headerlink" href="#overfitting" title="Permalink to this headline">¶</a></h2>
+<p>A model suffers from <strong>Overfitting</strong> when it has learned too much from the
+training data, and does not perform well in practice as a result.
+This is usually caused by the model having too much exposure to the training data.
+For the number classification example, if the model is overfit in this way, it
+may be picking up on tiny details that are misleading, like stray marks as an indication of a specific number.</p>
+<p>The estimate looks pretty good when you look at the middle of the graph, but the edges have large error.
+In practice, this error isn’t always at edge cases and can pop up anywhere.
+The noise in training can cause error as seen in the graph below.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/Overfit_small.png"><img alt="Overfit" src="../../_images/Overfit_small.png" style="width: 261.0px; height: 195.0px;" /></a>
+</div>
+<p>(Created using <a class="reference external" href="https://www.desmos.com/calculator/dffnj2jbow">https://www.desmos.com/calculator/dffnj2jbow</a>)</p>
+<p>In this example, the data is overfit by a polynomial degree.
+The points indicated are true to the function y = x^2, but does not approximate the function well outside of those points.</p>
+</div>
+<div class="section" id="underfitting">
+<h2><a class="toc-backref" href="#id3">Underfitting</a><a class="headerlink" href="#underfitting" title="Permalink to this headline">¶</a></h2>
+<p>A model suffers from <strong>Underfitting</strong> when it has not learned enough from the
+training data, and does not perform well in practice as a result.
+As a direct contrast to the previous idea, this issue is caused by not letting
+the model learn enough from training data.
+In the number classification example, if the training set is too small or the
+model has not had enough attempts to learn from it, then it will not be able to pick out key features of the numbers.</p>
+<p>The issue with this estimate is clear to the human eye, the model should be
+nonlinear, and is instead just a simple line.
+In machine learning, this could be a result of underfitting, the model has not
+had enough exposure to training data to adapt to it, and is currently in a simple state.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/Underfit.PNG"><img alt="Underfit" src="../../_images/Underfit.PNG" style="width: 425.0px; height: 218.0px;" /></a>
+</div>
+<p>(Created using Wolfram Alpha)</p>
+</div>
+<div class="section" id="motivation">
+<h2><a class="toc-backref" href="#id4">Motivation</a><a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<p>Finding a good fit is one of the central problems in machine learning.
+Gaining a good grasp of how to avoid fitting problems before even worrying
+about specific methods can keep models on track.
+The mindset of hunting for a good fit, rather than throwing more learning
+time at a model is very important to have.</p>
+</div>
+<div class="section" id="code">
+<h2><a class="toc-backref" href="#id5">Code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<p>The example code for overfitting shows some basic examples based in polynomial
+interpolation, trying to find the equation of a graph.
+The <a class="reference external" href="https://github.com/machinelearningmindset/machine-learning-course/blob/master/code/overview/overfitting/overfitting.py">overfitting.py</a> file, you can see that there is a true function being
+modeled, as well as some estimates that are shown to not be accurate.</p>
+<p>The estimates are representations of overfitting and underfitting.
+For overfitting, a higher degree polynomial is used (x cubed instead of squared).
+While the data is relatively close for the chosen points, there are some artifacts outside of them.
+The example of underfitting, however, does not even achieve accuracy at many of the points.
+Underfitting is similar to having a linear model when trying to model a quadratic function.
+The model does well on the point(s) it trained on, in this case the point used
+for the linear estimate, but poorly otherwise.</p>
+</div>
+<div class="section" id="conclusion">
+<h2><a class="toc-backref" href="#id6">Conclusion</a><a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>Check out the cross-validation and regularization sections for information on
+how to avoid overfitting in machine learning models.
+Ideally, a good fit looks something like this:</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/GoodFit.PNG"><img alt="Underfit" src="../../_images/GoodFit.PNG" style="width: 442.0px; height: 213.0px;" /></a>
+</div>
+<p>(Created using Wolfram Alpha)</p>
+<p>When using machine learning in any capacity, issues such as overfitting
+frequently come up, and having a grasp of the concept is very important.
+The modules in this section are among the most important in the whole repository,
+since regardless of the implementation, machine learning always includes these fundamentals.</p>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id7">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><a class="reference external" href="https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/">https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/</a></li>
+<li><a class="reference external" href="https://medium.com/greyatom/what-is-underfitting-and-overfitting-in-machine-learning-and-how-to-deal-with-it-6803a989c76">https://medium.com/greyatom/what-is-underfitting-and-overfitting-in-machine-learning-and-how-to-deal-with-it-6803a989c76</a></li>
+<li><a class="reference external" href="https://towardsdatascience.com/overfitting-vs-underfitting-a-conceptual-explanation-d94ee20ca7f9">https://towardsdatascience.com/overfitting-vs-underfitting-a-conceptual-explanation-d94ee20ca7f9</a></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="regularization.html" class="btn btn-neutral float-right" title="Regularization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="linear-regression.html" class="btn btn-neutral float-left" title="Linear Regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Amirsina Torfi
+      <span class="lastupdated">
+        Last updated on True.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
